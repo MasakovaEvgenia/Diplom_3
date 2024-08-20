@@ -48,17 +48,11 @@ public class MainPagePO {
 
 
     @Step("Клик по кнопке Булки")
-    public void clickBunsTab() {
-        driver.findElement(bunsTab).click();
+    public void clickBunsTab() throws InterruptedException {
+        WebElement element = driver.findElement(bunsTab);
+        element.click();
     }
 
-    @Step("Клик по табу конструктора")
-    public void clickTab(By tab) {
-        WebDriverWait wait = new WebDriverWait(driver, 3);
-
-        wait.until(ExpectedConditions.elementToBeClickable(tab));
-        driver.findElement(tab).click();
-    }
 
     @Step("Клик по кнопке Соусы")
     public void clickSaucesTab() throws InterruptedException {

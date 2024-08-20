@@ -1,54 +1,37 @@
 package tests.ui;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import page.object.LoginPagePO;
 import page.object.MainPagePO;
+import  static entity.UserCreds.*;
+import static entity.UrlConstants.BASE_URL;
+import static entity.UrlConstants.PROFILE_URL;
 
-import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class PersonalAccountTest { // переход в личный кабинет
+public class PersonalAccountTest extends BaseTest {
 
-    private WebDriver driver;
-    private String email = "masakova_35@yandex.ru";
-    private String password = "123456";
-    public static final String CHROME = "chrome";
-    public static final String YANDEX = "yandex";
 
-    public PersonalAccountTest(String browser){
+    public PersonalAccountTest(String browser) {
         init(browser);
     }
 
     @Parameterized.Parameters
     public static Object[][] getAccordionData() {
         return new Object[][]{
-                {CHROME},{YANDEX}
+                {CHROME}, {YANDEX}
         };
-    }
-
-    public void init(String browser) {
-        if (CHROME.equalsIgnoreCase(browser)) { // если браузер хром, тест запуститься на хроме
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        } else if (YANDEX.equalsIgnoreCase(browser)) { // если браузер Yandex, то запуститься на Yandex
-            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Jenya\\IdeaProjects\\Diplom_3\\yandexdriver-24.7.0.2299-win64\\yandexdriver.exe");
-            ChromeOptions options = new ChromeOptions().setBinary("C:\\Users\\Jenya\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe");
-            driver = new ChromeDriver(options);
-        }
     }
 
     @Test
     public void testPersonalAccountNavigation() {
-        driver.get("https://stellarburgers.nomoreparties.site/");
+        driver.get(BASE_URL);
         MainPagePO mainPage = new MainPagePO(driver);
         // Нажатие кнопки "Войти в аккаунт"
         mainPage.clickLoginButton();
@@ -60,7 +43,7 @@ public class PersonalAccountTest { // переход в личный кабин�
         // Переход в личный кабинет
         mainPage.clickPersonalAccountButton();
         // Проверка URL страницы
-        verifyCurrentUrl("https://stellarburgers.nomoreparties.site/account/profile");
+        verifyCurrentUrl(PROFILE_URL);
     }
 
     private void verifyCurrentUrl(String expectedUrl) {
@@ -69,10 +52,4 @@ public class PersonalAccountTest { // переход в личный кабин�
         wait.until(ExpectedConditions.urlToBe(expectedUrl));
     }
 
-    @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
 }

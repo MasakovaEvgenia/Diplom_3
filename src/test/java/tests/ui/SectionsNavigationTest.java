@@ -14,32 +14,19 @@ import page.object.MainPagePO;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class SectionsNavigationTest { // переход между разделами в конструкторе
-    private WebDriver driver;
-    public static final String CHROME = "chrome";
-    public static final String YANDEX = "yandex";
+public class SectionsNavigationTest extends BaseTest {
 
-    public SectionsNavigationTest(String browser){
+    public SectionsNavigationTest(String browser) {
         init(browser);
     }
 
     @Parameterized.Parameters
-    public static Object[][] getAccordionData() {
+    public static Object[][] getBrowserData() {
         return new Object[][]{
-                {CHROME},{YANDEX}
+                {CHROME}, {YANDEX}
         };
     }
 
-    public void init(String browser) {
-        if (CHROME.equalsIgnoreCase(browser)) { // если браузер хром, тест запуститься на хроме
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        } else if (YANDEX.equalsIgnoreCase(browser)) { // если браузер Yandex, то запуститься на Yandex
-            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Jenya\\IdeaProjects\\Diplom_3\\yandexdriver-24.7.0.2299-win64\\yandexdriver.exe");
-            ChromeOptions options = new ChromeOptions().setBinary("C:\\Users\\Jenya\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe");
-            driver = new ChromeDriver(options);
-        }
-    }
 
     @Test
     @DisplayName("Проверка перехода к разделу Булки")
@@ -72,12 +59,4 @@ public class SectionsNavigationTest { // переход между раздел�
         // Проверка, что раздел Начинки виден
         assertTrue(mainPage.isTabSelected(MainPagePO.fillingsTab));
     }
-
-    @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
-
 }
